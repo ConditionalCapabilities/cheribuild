@@ -65,6 +65,8 @@ class BuildFreeRTOS(CrossCompileAutotoolsProject):
                                               "main_servers",
                                               "mibench",
                                               "modbus",
+                                              "CWE457_Use_of_Uninitialized_Variable"
+                                              "CWE457_Use_of_Uninitialized_Variable_s02"
                                              ]}
 
     default_demo = "RISC-V-Generic"
@@ -154,6 +156,14 @@ class BuildFreeRTOS(CrossCompileAutotoolsProject):
             default=False,
             help="Compartmentalize FreeRTOS")
 
+        cls.opbounds_simple= cls.add_bool_option("opbounds_simple", show_help=True,
+            default=False,
+            help="Opbounds opt method")
+        
+        cls.store_exclude = cls.add_bool_option("store_exclude", show_help=True,
+            default=False,
+            help="Opbounds opt method")
+
         cls.compartmentalize_stdlibs = cls.add_bool_option("compartmentalize_stdlibs", show_help=True,
             default=False,
             help="Compartmentalize libc, libm and builtins")
@@ -169,6 +179,10 @@ class BuildFreeRTOS(CrossCompileAutotoolsProject):
         cls.compartmentalization_mode = cls.add_config_option("compartmentalization_mode", show_help=True,
             default="objs",
             help="'Comparmentalization mode (either objs or libs)")
+        
+        cls.juliet_mode = cls.add_config_option("juliet_mode", show_help=True,
+            default="v2",
+            help="'juliet_mode")
 
         cls.use_virtio_blk = cls.add_bool_option("use_virtio_blk", show_help=True,
             default=False,
@@ -243,6 +257,10 @@ class BuildFreeRTOS(CrossCompileAutotoolsProject):
                 program_root = "MiBench2"
             elif "ipc_benchmark" in self.demo_app:
                 program_root = "./demo/ipc_benchmark"
+            elif "CWE457_Use_of_Uninitialized_Variable_s02" in self.demo_app:
+                program_root = "./demo/CWE457_Use_of_Uninitialized_Variable/s02" 
+            elif "CWE457_Use_of_Uninitialized_Variable" in self.demo_app:
+                program_root = "./demo/CWE457_Use_of_Uninitialized_Variable/s01" 
             elif "cyberphys" in self.demo_app:
                 program_root = "./demo/cyberphys"
             elif "modbus" in self.demo_app:
